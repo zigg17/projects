@@ -75,3 +75,17 @@ class TREE:
         
         for child in node.children:
             self.print_tree(child, level + 1)
+
+    def pickle_tree(self, filename):
+        """Pickle the TREE object to a file."""
+        with open(filename, 'wb') as f:
+            pickle.dump(self, f)
+        print(f"Tree pickled to {filename}")
+
+    @staticmethod
+    def unpickle_tree(filename):
+        """Unpickle the TREE object from a file."""
+        with open(filename, 'rb') as f:
+            tree = pickle.load(f)
+        print(f"Tree unpickled from {filename}")
+        return tree
