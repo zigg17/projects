@@ -1,26 +1,48 @@
 import os
 import sys
 
+import base64
+import pickle
+
 def get_executable_directory():
     if getattr(sys, 'frozen', False):
         executable_directory = os.path.dirname(sys.executable)
     else:
         executable_directory = os.path.dirname(os.path.abspath(__file__))
+
     return executable_directory
 
 def list_directories(path):
     all_entries = os.listdir(path)
     directories = [entry for entry in all_entries if os.path.isdir(os.path.join(path, entry))]
+
     return directories
 
 def list_files_in_directory(path):
     files = [os.path.join(path, file) for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))]
+
     return files
 
 class TREE_NODE:
     def __init__(self, filepath):
         self.children = []
         self.filepath = filepath
+        self.video = self.load_and_encode_video(filepath)
+
+    def load_and_encode_video(self, filepath):
+        if not os.path.isfile(filepath):
+            return None 
+
+        try:
+            with open(filepath, 'rb') as file:
+                binary_content = file.read()
+
+                return base64.b64encode(binary_content).decode('utf-8')
+
+        except Exception as e:
+            print(f"Error loading video file {filepath}: {e}")
+            
+            return None
     
     def add_child(self, child):
         self.children.append(child)
