@@ -4,6 +4,8 @@ import sys
 import base64
 import pickle
 
+import paramiko
+
 def get_executable_directory():
     if getattr(sys, 'frozen', False):
         executable_directory = os.path.dirname(sys.executable)
